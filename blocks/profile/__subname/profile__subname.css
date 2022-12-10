@@ -1,0 +1,14 @@
+.profile__subname {
+  margin: 0;
+  grid-area: subname;
+  margin-bottom: 23px;
+  font-size: 18px;
+  line-height: 21.78px;
+}
+
+@media screen and (max-width: 700px) {
+  .profile__subname {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

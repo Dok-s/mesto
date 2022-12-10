@@ -1,0 +1,18 @@
+.photo-card__like {
+  width: 22px;
+  height: 19px;
+  background-color: #ffffff;
+  border: none;
+  background-image: url("../../../images/like.svg");
+  margin-top: auto;
+  margin-bottom: auto;
+  cursor: pointer;
+}
+
+.photo-card__like:hover {
+  opacity: 0.5;
+}
+
+.photo-card__like:active {
+  background-color: #000000;
+}
