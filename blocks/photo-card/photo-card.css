@@ -1,5 +1,5 @@
 .photo-card {
-  width: 282px;
-  max-height: 361px;
+  width: 100%;
+  min-height: 361px;
   border-radius: 4%;
 }

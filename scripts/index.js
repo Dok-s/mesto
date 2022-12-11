@@ -15,13 +15,13 @@ profileButton.addEventListener('click', openModal);
 popUpBtnClose.addEventListener('click', closeModal);
 
 function openModal() {
-  popUp.classList.remove("popup-open");
+  popUp.classList.add("popup_open");
   nameTitle.value = profileName.textContent;
   subname.value = profileSubName.textContent;
 }
 
 function closeModal() {
-  popUp.classList.add("popup-open");
+  popUp.classList.remove("popup_open");
 }
 
 function addInfo (event) {
