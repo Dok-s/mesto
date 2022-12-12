@@ -4,7 +4,8 @@
   background-color: #000000;
   margin-top: auto;
   margin-bottom: auto;
-  border: 1px solid #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 2px;
   background-image: url("../../../images/plus-button.svg");
   background-position: center center;
   background-repeat: no-repeat;
@@ -12,14 +13,14 @@
 }
 
 .profile__button:hover {
-  border-color: rgba(255,255,255, 1.5);
-  opacity: 0.5;
+  border: 2px solid #ffffff;
+  opacity: 60%;
 }
 
 @media screen and (max-width: 700px) {
   .profile__button {
     background-image: url("../../../images/plus-button_mini.svg");
     width: 100%;
-    margin-top: 20px;
+    margin-top: 9px;
   }
 }

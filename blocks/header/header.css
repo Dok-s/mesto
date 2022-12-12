@@ -3,5 +3,15 @@
   margin-bottom: 40px;
   min-height: 74px;
   position: relative;
-  border-bottom: 1px solid rgb(59,59,59, 0.7);
+  border-bottom: 1px solid rgb(54,54,54);
+}
+
+@media screen and (max-width: 700px) {
+  .header {
+    margin-left: -19px;
+    margin-right: -19px;
+    margin-top: 63px;
+    margin-bottom: 44px;
+    min-height: 55px;
+  }
 }
