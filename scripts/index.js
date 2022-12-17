@@ -1,42 +1,31 @@
-let popupOpen = document.querySelector('.popup-open');
-let profileButton = document.querySelector('.profile__button-create');
-let popUp = document.querySelector(".popup");
-let popUpBtnClose = document.querySelector(".popup__button-close");
-let popUpBtn = document.querySelector(".popup__button");
-let profileName = document.querySelector(".profile__name");
-let profileSubName = document.querySelector(".profile__subname");
-let profileInfo = document.querySelector(".profile__info");
-const popupForm = document.forms.addProfile;
-const nameTitle = popupForm.elements.name;
-const subname = popupForm.elements.about;
+let popUp = document.querySelector('.popup')
+let popUpName = document.querySelector('.popup__text_type_name')
+let popUpSubName = document.querySelector('.popup__text_type_subname')
+let profileName = document.querySelector('.profile__name')
+let profileSubName = document.querySelector('.profile__subname')
+let profileButtonCreate = document.querySelector('.profile__button-create')
+let popupButtonClose = document.querySelector('.popup__button-close')
+let popUpForm = document.querySelector('.popup__form')
+let popUpButton = document.querySelector('.popup__button')
 
 
-profileButton.addEventListener('click', openModal);
-popUpBtnClose.addEventListener('click', closeModal);
-
-function openModal() {
-  popUp.classList.add("popup_open");
-  nameTitle.value = profileName.textContent;
-  subname.value = profileSubName.textContent;
+function modalOpen() {
+  popUp.classList.add('popup_open')
+  popUpName.value = profileName.textContent
+  popUpSubName.value = profileSubName.textContent
 }
 
-function closeModal() {
-  popUp.classList.remove("popup_open");
+function modalClose() {
+  popUp.classList.remove('popup_open')
 }
 
-function addInfo (event) {
-  event.preventDefault();
-  profileName.textContent = nameTitle.value;
-  profileSubName.textContent = subname.value;
-  closeModal()
+function addText(evt) {
+  evt.preventDefault();
+  profileName.textContent = popUpName.value
+  profileSubName.textContent = popUpSubName.value
+  modalClose()
 }
 
-// function add (event) {
-//   event.preventDefault();
-//   profileName.textContent = event.target.name.value;
-//   profileSubName.textContent = event.target.about.value;
-//   console.log(event.target.name.value);
-//   closeModal()
-// } МОЖНО ЛИ ТАКУЮ ФУНКЦИЮ ИСПОЛЬЗОВАТЬ ВМЕСТО addInfo ?
-
-popupForm.addEventListener('submit', addInfo);
+profileButtonCreate.addEventListener('click', modalOpen)
+popupButtonClose.addEventListener('click', modalClose)
+popUpForm.addEventListener('submit', addText)
