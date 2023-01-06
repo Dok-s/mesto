@@ -14,6 +14,11 @@
   padding: 0;
 }
 
+.popup_image .popup__button-close {
+  top: -32px;
+  right: -10px;
+}
+
 .popup__button-close:hover {
   opacity: 0.6;
 }
@@ -24,5 +29,12 @@
     height: 20px;
     right: 0;
     top: -35px;
+  }
+
+  .popup_image .popup__button-close {
+    width: 20px;
+    height: 20px;
+    right: 39px;
+    top: -19px;
   }
 }

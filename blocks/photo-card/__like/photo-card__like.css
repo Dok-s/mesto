@@ -13,7 +13,3 @@
 .photo-card__like:hover {
   opacity: 0.5;
 }
-
-.photo-card__like:active {
-  background-color: #000000;
-}

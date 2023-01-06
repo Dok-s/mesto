@@ -6,6 +6,13 @@
   border-radius: 13px;
 }
 
+.popup_image .popup__container {
+  background-color: #0000;
+  max-width: none;
+  min-height: none;
+  border-radius: none;
+}
+
 
 @media screen and (max-width: 700px) {
   .popup__container {
