@@ -103,8 +103,7 @@ initialCards.forEach(item => {
   addPhoto(item.name, item.link)
 })
 
-//создание карточки из template
-function addPhoto(titleValue, linkValue) {
+function createCard(titleValue,linkValue) {
   const photoCardElement = photoCardTemplate.querySelector('.photo-card').cloneNode(true);
   const photo = photoCardElement.querySelector('.photo-card__image')
   photo.src = linkValue;
@@ -124,15 +123,12 @@ function addPhoto(titleValue, linkValue) {
     popImage.src = linkValue
     popImage.alt = titleValue
     popCaption.textContent = titleValue
-
   })
-  //добавление карточки на страницу первым элементом
-  createCard(photoCardElement);
+  return photoCardElement
 }
 
-function createCard(item) {
-  const prependCard = photoCards.prepend(item)
-return prependCard
+function addPhoto(item, link){
+  photoCards.prepend(createCard(item, link))
 }
 
 //создаие нового места, добавление ссылки на картинку, добавление подписи для картинки
@@ -140,6 +136,7 @@ function createPhoto(evt) {
   evt.preventDefault()
 
   addPhoto(title.value, link.value);
+  closeModal(popUpCreate)
 
   evt.target.reset();
 }
