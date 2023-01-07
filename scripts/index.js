@@ -1,34 +1,39 @@
-let popUp = document.querySelector('.popup')
-let popUpName = document.querySelector('.popup__text_type_name')
-let popUpSubName = document.querySelector('.popup__text_type_subname')
-let profileName = document.querySelector('.profile__name')
-let profileSubName = document.querySelector('.profile__subname')
-let profileButtonCreate = document.querySelector('.profile__button-create')
-let popupButtonClose = document.querySelector('.popup__button-close')
-let popUpForm = document.querySelector('.popup_profile .popup__form')
-let popUpButton = document.querySelector('.popup__button')
-let popUpPhotoAddButton = document.querySelector('.profile__button')
-let popUpCreate = document.querySelector('.popup_create')
-let popUpClose = document.querySelector('.popup_create .popup__button-close')
-let popUpCreateForm = document.querySelector('.popup_create .popup__form')
-let photoCards = document.querySelector('.photo-cards')
-let photoLike = document.querySelector('.photo-card__like')
-let photoCardImage = document.querySelector('.photo-card__image')
-let photoLikes = document.querySelectorAll('.photo-card__like')
-let popUpSubImage = document.querySelectorAll('.popup__subimage')
-let photoCardCapton = document.querySelector('.photo-card__title')
-let popImage = document.querySelector('.popup__image')
-let popCaption = document.querySelector('.popup__subimage')
-let popUpImage = document.querySelector(".popup_image");
-let popUpBtnImageClose = document.querySelector(".popup_image .popup__button-close")
+const popUpProfile = document.querySelector('.popup_profile')
+const popUpName = document.querySelector('.popup__text_type_name')
+const popUpSubName = document.querySelector('.popup__text_type_subname')
+const profileName = document.querySelector('.profile__name')
+const profileSubName = document.querySelector('.profile__subname')
+const profileButtonCreate = document.querySelector('.profile__button-create')
+const popupButtonClose = document.querySelector('.popup__button-close')
+const popUpForm = document.querySelector('.popup_profile .popup__form')
+const popUpButton = document.querySelector('.popup__button')
+const popUpPhotoAddButton = document.querySelector('.profile__button')
+const popUpCreate = document.querySelector('.popup_create')
+const popUpClose = document.querySelector('.popup_create .popup__button-close')
+const popUpCreateForm = document.querySelector('.popup_create .popup__form')
+const photoCards = document.querySelector('.photo-cards')
+const photoLike = document.querySelector('.photo-card__like')
+const photoCardImage = document.querySelector('.photo-card__image')
+const photoLikes = document.querySelectorAll('.photo-card__like')
+const photoCardCapton = document.querySelector('.photo-card__title')
+const popImage = document.querySelector('.popup__image')
+const popCaption = document.querySelector('.popup__subimage')
+const popUpImage = document.querySelector(".popup_image");
+const popUpBtnImageClose = document.querySelector(".popup_image .popup__button-close")
+const photoCardBin = document.querySelector('.photo-card__bin')
+const photoCardsBin = document.querySelectorAll('.photo-card__bin');
+const photoCard = document.querySelector(('.photo-card'));
+const title = document.querySelector('.popup__text_type_title');
+const link = document.querySelector('.popup__text_type_link');
+const photoCardTemplate = document.querySelector('#photo-card-tepmlate').content;
 
 //открытие поп-апа
-function modalOpen(popUp) {
+function openModal(popUp) {
   popUp.classList.add('popup_open')
 }
 
 //закрытие поп-апа
-function modalClose(popUp) {
+function closeModal(popUp) {
   popUp.classList.remove('popup_open')
 }
 
@@ -37,19 +42,19 @@ function addText(evt) {
   evt.preventDefault();
   profileName.textContent = popUpName.value
   profileSubName.textContent = popUpSubName.value
-  modalClose(popUp)
+  closeModal(popUpProfile)
 }
 
 //открытие поп-апа и появление добавленного текста в форме
 profileButtonCreate.addEventListener('click', function() {
-  modalOpen(popUp)
+  openModal(popUpProfile)
   popUpName.value = profileName.textContent
   popUpSubName.value = profileSubName.textContent
 });
 
 //слушатель с закрытием поп-апа при нажатии
 popupButtonClose.addEventListener('click', function() {
-  modalClose(popUp)
+  closeModal(popUpProfile)
 });
 
 //слушатель с открытием функции addText при нажатии
@@ -57,12 +62,12 @@ popUpForm.addEventListener('submit', addText);
 
 //слушать с открытием поп-апа для добавления фото
 popUpPhotoAddButton.addEventListener('click', function() {
-  modalOpen(popUpCreate)
+  openModal(popUpCreate)
 });
 
 //слушатель с закрытием поп-апа для добавления фото
 popUpClose.addEventListener('click', function() {
-  modalClose(popUpCreate)
+  closeModal(popUpCreate)
 });
 
 //массив из 6 карточек
@@ -100,16 +105,14 @@ initialCards.forEach(item => {
 
 //создание карточки из template
 function addPhoto(titleValue, linkValue) {
-  const photoCardTemplate = document.querySelector('#photo-card-tepmlate').content;
   const photoCardElement = photoCardTemplate.querySelector('.photo-card').cloneNode(true);
-
-  let photo = photoCardElement.querySelector('.photo-card__image')
+  const photo = photoCardElement.querySelector('.photo-card__image')
   photo.src = linkValue;
   photoCardElement.querySelector('.photo-card__title').textContent = titleValue;
   photo.alt = titleValue;
   //слушатель с удалением карточки при нажатии на корзину
   photoCardElement.querySelector('.photo-card__bin').addEventListener('click', function(evt) {
-    evt.target.parentElement.remove()
+    evt.target.closest(".photo-card").remove()
   })
   //добавление/удаление сердечка
   photoCardElement.querySelector('.photo-card__like').addEventListener('click', function(evt) {
@@ -117,49 +120,33 @@ function addPhoto(titleValue, linkValue) {
   })
   //открытие модального онка с картинкой и передача ссылки на нее и названия
   photo.addEventListener('click', function() {
-    modalOpen(popUpImage);
+    openModal(popUpImage);
     popImage.src = linkValue
+    popImage.alt = titleValue
     popCaption.textContent = titleValue
+
   })
   //добавление карточки на страницу первым элементом
-  photoCards.prepend(photoCardElement);
+  createCard(photoCardElement);
+}
 
-  //закрытие поп-апа
-  modalClose(popUpCreate)
+function createCard(item) {
+  const prependCard = photoCards.prepend(item)
+return prependCard
 }
 
 //создаие нового места, добавление ссылки на картинку, добавление подписи для картинки
-function popForm(evt) {
+function createPhoto(evt) {
   evt.preventDefault()
-  const title = document.querySelector('.popup__text_type_title');
-  const link = document.querySelector('.popup__text_type_link');
 
   addPhoto(title.value, link.value);
 
-  document.querySelector('.popup__subimage').textContent = title.value
-
-  title.value = "";
-  link.value = "";
-  modalClose()
+  evt.target.reset();
 }
 //слушатель создания карточки с новым местом
-popUpCreateForm.addEventListener('submit', popForm);
-
-//удаление карточки по нажатию на 'корзину'
-const removeBin = (event) => {
-  event.target.parentElement.remove()
-}
-
-let photoCardBin = document.querySelector('.photo-card__bin')
-let photoCardsBin = document.querySelectorAll('.photo-card__bin');
-let photoCard = document.querySelector(('.photo-card'));
-
-//перебор карточек с корзинами и слушатель с кликом
-photoCardsBin.forEach(photoCardBin => {
-  photoCardBin.addEventListener('click', removeBin)
-})
+popUpCreateForm.addEventListener('submit', createPhoto);
 
 //закрытие поп-апа с картинкой
 popUpBtnImageClose.addEventListener('click', function() {
-  modalClose(popUpImage)
+  closeModal(popUpImage)
 });
