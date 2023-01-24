@@ -6,7 +6,7 @@ const profileSubName = document.querySelector('.profile__subname')
 const profileButtonCreate = document.querySelector('.profile__button-create')
 const popupButtonClose = document.querySelector('.popup__button-close')
 const popUpForm = document.querySelector('.popup_profile .popup__form')
-const popUpButton = document.querySelector('.popup__button')
+const popUpButtons = document.querySelectorAll('.popup__button')
 const popUpPhotoAddButton = document.querySelector('.profile__button')
 const popUpCreate = document.querySelector('.popup_create')
 const popUpClose = document.querySelector('.popup_create .popup__button-close')
@@ -26,6 +26,22 @@ const photoCard = document.querySelector(('.photo-card'));
 const title = document.querySelector('.popup__text_type_title');
 const link = document.querySelector('.popup__text_type_link');
 const photoCardTemplate = document.querySelector('#photo-card-tepmlate').content;
+const popupContainer = document.querySelectorAll('.popup__container')
+const popUp = document.querySelectorAll('.popup')
+const formAddProfile = document.forms.addProfile
+const formAddProfileBtn = formAddProfile.querySelector('.popup__button')
+const formName = formAddProfile.elements.name
+const formAbout = formAddProfile.elements.about
+const formProfileNameError = formAddProfile.querySelector('.popup__text_type_name-error')
+const formProfileAboutError = formAddProfile.querySelector('.popup__text_type_subname-error')
+const formAddPhoto = document.forms.addPhoto
+const formAddPhotoBtn = formAddPhoto.querySelector('.popup__button')
+const formTitle = formAddPhoto.elements.title
+const formLink = formAddPhoto.elements.link
+const formAddPhotoTitleError = formAddPhoto.querySelector('.popup__text_type_title-error')
+const formAddPhotoLinkError = formAddPhoto.querySelector('.popup__text_type_link-error')
+const popUpSpan = document.querySelectorAll('.popup__span')
+
 
 //открытие поп-апа
 function openModal(popUp) {
@@ -37,19 +53,15 @@ function closeModal(popUp) {
   popUp.classList.remove('popup_open')
 }
 
-//добавлене текста при создании профиля и закрытие поп-апа
-function addText(evt) {
-  evt.preventDefault();
-  profileName.textContent = popUpName.value
-  profileSubName.textContent = popUpSubName.value
-  closeModal(popUpProfile)
-}
-
 //открытие поп-апа и появление добавленного текста в форме
 profileButtonCreate.addEventListener('click', function() {
   openModal(popUpProfile)
   popUpName.value = profileName.textContent
   popUpSubName.value = profileSubName.textContent
+  if (popUpName && popUpSubName) {
+    setSubmitButtonState(true, formAddProfileBtn)
+  }
+  checkInputProfile()
 });
 
 //слушатель с закрытием поп-апа при нажатии
@@ -57,12 +69,23 @@ popupButtonClose.addEventListener('click', function() {
   closeModal(popUpProfile)
 });
 
-//слушатель с открытием функции addText при нажатии
-popUpForm.addEventListener('submit', addText);
+//добавлене текста при создании профиля и закрытие поп-апа
+popUpForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  profileName.textContent = popUpName.value
+  profileSubName.textContent = popUpSubName.value
+  closeModal(popUpProfile)
+})
+
+popUpForm.addEventListener('input', function(evt) {
+  const isValid = formName.validity.valid && formAbout.validity.valid
+  setSubmitButtonState(isValid, formAddProfileBtn)
+})
 
 //слушать с открытием поп-апа для добавления фото
 popUpPhotoAddButton.addEventListener('click', function() {
   openModal(popUpCreate)
+  setSubmitButtonState(false, formAddPhotoBtn)
 });
 
 //слушатель с закрытием поп-апа для добавления фото
@@ -132,18 +155,42 @@ function addPhoto(item, link){
 }
 
 //создаие нового места, добавление ссылки на картинку, добавление подписи для картинки
-function createPhoto(evt) {
+formAddPhoto.addEventListener('submit', function(evt) {
   evt.preventDefault()
 
   addPhoto(title.value, link.value);
   closeModal(popUpCreate)
 
   evt.target.reset();
-}
-//слушатель создания карточки с новым местом
-popUpCreateForm.addEventListener('submit', createPhoto);
+})
+
+formAddPhoto.addEventListener('input', function(evt) {
+  const isValid = formTitle.validity.valid && formLink.validity.valid
+  setSubmitButtonState(isValid, formAddPhotoBtn)
+})
 
 //закрытие поп-апа с картинкой
 popUpBtnImageClose.addEventListener('click', function() {
   closeModal(popUpImage)
 });
+
+
+//закрытие попапа вне области
+window.onclick = function(event) {
+  popupContainer.forEach((Container) => {
+    popUp.forEach((popup) => {
+      if (event.target !== Container && event.target === popup) {
+        closeModal(popup)
+      }
+    })
+  })
+}
+
+//закрытие попапа по нажатию на escape
+document.addEventListener('keyup', (evt) => {
+  popUp.forEach((item) => {
+    if (item.classList.contains('popup_open') && evt.key === "Escape") {
+      closeModal(item)
+    }
+  })
+})
