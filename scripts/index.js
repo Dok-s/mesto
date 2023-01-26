@@ -26,8 +26,8 @@ const photoCard = document.querySelector(('.photo-card'));
 const title = document.querySelector('.popup__text_type_title');
 const link = document.querySelector('.popup__text_type_link');
 const photoCardTemplate = document.querySelector('#photo-card-tepmlate').content;
-const popupContainer = document.querySelectorAll('.popup__container')
-const popUp = document.querySelectorAll('.popup')
+const popupContainers = document.querySelectorAll('.popup__container')
+const popUps = document.querySelectorAll('.popup')
 const formAddProfile = document.forms.addProfile
 const formAddProfileBtn = formAddProfile.querySelector('.popup__button')
 const formName = formAddProfile.elements.name
@@ -46,11 +46,13 @@ const popUpSpan = document.querySelectorAll('.popup__span')
 //открытие поп-апа
 function openModal(popUp) {
   popUp.classList.add('popup_open')
+  document.addEventListener('keydown', closeByEscape);
 }
 
 //закрытие поп-апа
 function closeModal(popUp) {
   popUp.classList.remove('popup_open')
+  document.removeEventListener('keydown', closeByEscape);
 }
 
 //открытие поп-апа и появление добавленного текста в форме
@@ -75,11 +77,6 @@ popUpForm.addEventListener('submit', (evt) => {
   profileName.textContent = popUpName.value
   profileSubName.textContent = popUpSubName.value
   closeModal(popUpProfile)
-})
-
-popUpForm.addEventListener('input', function(evt) {
-  const isValid = formName.validity.valid && formAbout.validity.valid
-  setSubmitButtonState(isValid, formAddProfileBtn)
 })
 
 //слушать с открытием поп-апа для добавления фото
@@ -164,11 +161,6 @@ formAddPhoto.addEventListener('submit', function(evt) {
   evt.target.reset();
 })
 
-formAddPhoto.addEventListener('input', function(evt) {
-  const isValid = formTitle.validity.valid && formLink.validity.valid
-  setSubmitButtonState(isValid, formAddPhotoBtn)
-})
-
 //закрытие поп-апа с картинкой
 popUpBtnImageClose.addEventListener('click', function() {
   closeModal(popUpImage)
@@ -177,8 +169,8 @@ popUpBtnImageClose.addEventListener('click', function() {
 
 //закрытие попапа вне области
 window.onclick = function(event) {
-  popupContainer.forEach((Container) => {
-    popUp.forEach((popup) => {
+  popupContainers.forEach((Container) => {
+    popUps.forEach((popup) => {
       if (event.target !== Container && event.target === popup) {
         closeModal(popup)
       }
@@ -186,11 +178,10 @@ window.onclick = function(event) {
   })
 }
 
-//закрытие попапа по нажатию на escape
-document.addEventListener('keyup', (evt) => {
-  popUp.forEach((item) => {
-    if (item.classList.contains('popup_open') && evt.key === "Escape") {
-      closeModal(item)
-    }
-  })
-})
+// закрытие попапа по клавише Escape
+function closeByEscape(evt) {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_open')
+    closeModal(openedPopup)
+  }
+}
