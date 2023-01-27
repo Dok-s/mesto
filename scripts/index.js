@@ -5,6 +5,7 @@ const profileName = document.querySelector('.profile__name')
 const profileSubName = document.querySelector('.profile__subname')
 const profileButtonCreate = document.querySelector('.profile__button-create')
 const popupButtonClose = document.querySelector('.popup__button-close')
+const popupButtonsClose = document.querySelectorAll('.popup__button-close')
 const popUpForm = document.querySelector('.popup_profile .popup__form')
 const popUpButtons = document.querySelectorAll('.popup__button')
 const popUpPhotoAddButton = document.querySelector('.profile__button')
@@ -40,7 +41,8 @@ const formTitle = formAddPhoto.elements.title
 const formLink = formAddPhoto.elements.link
 const formAddPhotoTitleError = formAddPhoto.querySelector('.popup__text_type_title-error')
 const formAddPhotoLinkError = formAddPhoto.querySelector('.popup__text_type_link-error')
-const popUpSpan = document.querySelectorAll('.popup__span')
+const popUpSpans = document.querySelectorAll('.popup__span')
+const buttonInactive = document.querySelector('.popup__button_inactive')
 
 
 //открытие поп-апа
@@ -60,16 +62,29 @@ profileButtonCreate.addEventListener('click', function() {
   openModal(popUpProfile)
   popUpName.value = profileName.textContent
   popUpSubName.value = profileSubName.textContent
-  if (popUpName && popUpSubName) {
-    setSubmitButtonState(true, formAddProfileBtn)
+  if (popUpName.validity.valid && popUpSubName.validity.valid) {
+    formAddProfileBtn.removeAttribute('disabled');
+    formAddProfileBtn.classList.remove('popup__button_inactive')
   }
   checkInputProfile()
 });
 
+function checkInputProfile() {
+  if (formName.validity.valid && formAbout.validity.valid) {
+    formName.classList.remove('popup__text_type_error')
+    formAbout.classList.remove('popup__text_type_error')
+    popUpSpans.forEach((item) => {
+      item.classList.remove('popup__text-error_active')
+      item.textContent = ""
+    })
+  }
+}
+
 //слушатель с закрытием поп-апа при нажатии
-popupButtonClose.addEventListener('click', function() {
-  closeModal(popUpProfile)
-});
+popupButtonsClose.forEach(button => {
+  const popup = button.closest('.popup')
+  button.addEventListener('click', () => closeModal(popup))
+})
 
 //добавлене текста при создании профиля и закрытие поп-апа
 popUpForm.addEventListener('submit', (evt) => {
@@ -82,7 +97,8 @@ popUpForm.addEventListener('submit', (evt) => {
 //слушать с открытием поп-апа для добавления фото
 popUpPhotoAddButton.addEventListener('click', function() {
   openModal(popUpCreate)
-  setSubmitButtonState(false, formAddPhotoBtn)
+  formAddPhotoBtn.setAttribute('disabled', true);
+  formAddPhotoBtn.classList.add('popup__button_inactive');
 });
 
 //слушатель с закрытием поп-апа для добавления фото
