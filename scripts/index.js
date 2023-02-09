@@ -1,3 +1,6 @@
+import { FormValidator } from "./FormValidator.js";
+import { Card } from "./Card.js"
+
 const popUpProfile = document.querySelector('.popup_profile')
 const popUpName = document.querySelector('.popup__text_type_name')
 const popUpSubName = document.querySelector('.popup__text_type_subname')
@@ -26,7 +29,7 @@ const photoCardsBin = document.querySelectorAll('.photo-card__bin');
 const photoCard = document.querySelector(('.photo-card'));
 const title = document.querySelector('.popup__text_type_title');
 const link = document.querySelector('.popup__text_type_link');
-const photoCardTemplate = document.querySelector('#photo-card-tepmlate').content;
+const photoCardTemplate = document.querySelector('#photo-card-tepmlate')
 const popupContainers = document.querySelectorAll('.popup__container')
 const popUps = document.querySelectorAll('.popup')
 const formAddProfile = document.forms.addProfile
@@ -43,6 +46,14 @@ const formAddPhotoTitleError = formAddPhoto.querySelector('.popup__text_type_tit
 const formAddPhotoLinkError = formAddPhoto.querySelector('.popup__text_type_link-error')
 const popUpSpans = document.querySelectorAll('.popup__span')
 const buttonInactive = document.querySelector('.popup__button_inactive')
+const formSelectors = document.querySelectorAll('.popup__form')
+const settings = {
+  inputSelectors: '.popup__text',
+  submitButtonSelector: '.popup__button',
+  inputErrorClass: 'popup__text_type_error',
+  errorClass: 'popup__text-error_active',
+  buttonInactive: 'popup__button_inactive',
+}
 
 
 //открытие поп-апа
@@ -101,11 +112,6 @@ popUpPhotoAddButton.addEventListener('click', function() {
   formAddPhotoBtn.classList.add('popup__button_inactive');
 });
 
-//слушатель с закрытием поп-апа для добавления фото
-popUpClose.addEventListener('click', function() {
-  closeModal(popUpCreate)
-});
-
 //массив из 6 карточек
 const initialCards = [
   {
@@ -134,54 +140,31 @@ const initialCards = [
   }
 ];
 
-//перебор каждой карточки и открытие функции addPhoto
 initialCards.forEach(item => {
-  addPhoto(item.name, item.link)
+  addPhoto(item.name, item.link, '#photo-card-tepmlate')
 })
 
-function createCard(titleValue,linkValue) {
-  const photoCardElement = photoCardTemplate.querySelector('.photo-card').cloneNode(true);
-  const photo = photoCardElement.querySelector('.photo-card__image')
-  photo.src = linkValue;
-  photoCardElement.querySelector('.photo-card__title').textContent = titleValue;
-  photo.alt = titleValue;
-  //слушатель с удалением карточки при нажатии на корзину
-  photoCardElement.querySelector('.photo-card__bin').addEventListener('click', function(evt) {
-    evt.target.closest(".photo-card").remove()
-  })
-  //добавление/удаление сердечка
-  photoCardElement.querySelector('.photo-card__like').addEventListener('click', function(evt) {
-    evt.target.classList.toggle('photo-card__like_type_on')
-  })
-  //открытие модального онка с картинкой и передача ссылки на нее и названия
-  photo.addEventListener('click', function() {
-    openModal(popUpImage);
-    popImage.src = linkValue
-    popImage.alt = titleValue
-    popCaption.textContent = titleValue
-  })
-  return photoCardElement
-}
-
-function addPhoto(item, link){
-  photoCards.prepend(createCard(item, link))
+function addPhoto(item, link, templateSelector){
+  const card = new Card(item, link, templateSelector, openPhoto)
+  photoCards.prepend(card.generateCard())
 }
 
 //создаие нового места, добавление ссылки на картинку, добавление подписи для картинки
 formAddPhoto.addEventListener('submit', function(evt) {
   evt.preventDefault()
 
-  addPhoto(title.value, link.value);
+  addPhoto(title.value, link.value, '#photo-card-tepmlate', openPhoto);
   closeModal(popUpCreate)
 
   evt.target.reset();
 })
 
-//закрытие поп-апа с картинкой
-popUpBtnImageClose.addEventListener('click', function() {
-  closeModal(popUpImage)
-});
-
+function openPhoto(evt) {
+  popImage.src = evt.target.src;
+  popImage.alt = evt.target.alt;
+  popCaption.textContent = evt.target.alt;
+  openModal(popUpImage);
+}
 
 //закрытие попапа вне области
 window.onclick = function(event) {
@@ -201,3 +184,8 @@ function closeByEscape(evt) {
     closeModal(openedPopup)
   }
 }
+
+formSelectors.forEach(formSelector => {
+  const editPopValid = new FormValidator(settings, formSelector)
+  editPopValid.enableValidation()
+})
