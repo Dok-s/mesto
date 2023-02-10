@@ -18,10 +18,11 @@ class Card {
 
   generateCard() {
     this._element = this._getTemplate();
-    this._setEventListeners();
-    this._element.querySelector('.photo-card__image').src = this._linkValue;
+    this._cardImage = this._element.querySelector('.photo-card__image');
+    this._cardImage.src = this._linkValue;
     this._element.querySelector('.photo-card__title').textContent = this._titleValue;
-    this._element.querySelector('.photo-card__image').alt = this._titleValue;
+    this._cardImage.alt = this._titleValue;
+    this._setEventListeners();
 
     return this._element;
   }
@@ -37,6 +38,7 @@ class Card {
 
     this._element.querySelector('.photo-card__image').addEventListener('click', this._openPhoto);
   }
+
 }
 
 export { Card }

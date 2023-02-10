@@ -4,49 +4,24 @@ import { Card } from "./Card.js"
 const popUpProfile = document.querySelector('.popup_profile')
 const popUpName = document.querySelector('.popup__text_type_name')
 const popUpSubName = document.querySelector('.popup__text_type_subname')
+const popUpTitle = document.querySelector('.popup__text_type_title')
+const popUpLink = document.querySelector('.popup__text_type_link')
 const profileName = document.querySelector('.profile__name')
 const profileSubName = document.querySelector('.profile__subname')
 const profileButtonCreate = document.querySelector('.profile__button-create')
-const popupButtonClose = document.querySelector('.popup__button-close')
-const popupButtonsClose = document.querySelectorAll('.popup__button-close')
+const popupsButtonsCloses = document.querySelectorAll('.popup__button-close')
 const popUpForm = document.querySelector('.popup_profile .popup__form')
-const popUpButtons = document.querySelectorAll('.popup__button')
 const popUpPhotoAddButton = document.querySelector('.profile__button')
 const popUpCreate = document.querySelector('.popup_create')
-const popUpClose = document.querySelector('.popup_create .popup__button-close')
-const popUpCreateForm = document.querySelector('.popup_create .popup__form')
 const photoCards = document.querySelector('.photo-cards')
-const photoLike = document.querySelector('.photo-card__like')
-const photoCardImage = document.querySelector('.photo-card__image')
-const photoLikes = document.querySelectorAll('.photo-card__like')
-const photoCardCapton = document.querySelector('.photo-card__title')
 const popImage = document.querySelector('.popup__image')
 const popCaption = document.querySelector('.popup__subimage')
 const popUpImage = document.querySelector(".popup_image");
-const popUpBtnImageClose = document.querySelector(".popup_image .popup__button-close")
-const photoCardBin = document.querySelector('.photo-card__bin')
-const photoCardsBin = document.querySelectorAll('.photo-card__bin');
-const photoCard = document.querySelector(('.photo-card'));
 const title = document.querySelector('.popup__text_type_title');
 const link = document.querySelector('.popup__text_type_link');
-const photoCardTemplate = document.querySelector('#photo-card-tepmlate')
-const popupContainers = document.querySelectorAll('.popup__container')
-const popUps = document.querySelectorAll('.popup')
 const formAddProfile = document.forms.addProfile
-const formAddProfileBtn = formAddProfile.querySelector('.popup__button')
-const formName = formAddProfile.elements.name
-const formAbout = formAddProfile.elements.about
-const formProfileNameError = formAddProfile.querySelector('.popup__text_type_name-error')
-const formProfileAboutError = formAddProfile.querySelector('.popup__text_type_subname-error')
 const formAddPhoto = document.forms.addPhoto
-const formAddPhotoBtn = formAddPhoto.querySelector('.popup__button')
-const formTitle = formAddPhoto.elements.title
-const formLink = formAddPhoto.elements.link
-const formAddPhotoTitleError = formAddPhoto.querySelector('.popup__text_type_title-error')
-const formAddPhotoLinkError = formAddPhoto.querySelector('.popup__text_type_link-error')
-const popUpSpans = document.querySelectorAll('.popup__span')
-const buttonInactive = document.querySelector('.popup__button_inactive')
-const formSelectors = document.querySelectorAll('.popup__form')
+const popUps = document.querySelectorAll('.popup')
 const settings = {
   inputSelectors: '.popup__text',
   submitButtonSelector: '.popup__button',
@@ -73,29 +48,16 @@ profileButtonCreate.addEventListener('click', function() {
   openModal(popUpProfile)
   popUpName.value = profileName.textContent
   popUpSubName.value = profileSubName.textContent
-  if (popUpName.validity.valid && popUpSubName.validity.valid) {
-    formAddProfileBtn.removeAttribute('disabled');
-    formAddProfileBtn.classList.remove('popup__button_inactive')
-  }
-  checkInputProfile()
+  const profileValid = new FormValidator(settings, formAddProfile)
+  profileValid.enableValidation();
+  profileValid.resetValidation()
 });
 
-function checkInputProfile() {
-  if (formName.validity.valid && formAbout.validity.valid) {
-    formName.classList.remove('popup__text_type_error')
-    formAbout.classList.remove('popup__text_type_error')
-    popUpSpans.forEach((item) => {
-      item.classList.remove('popup__text-error_active')
-      item.textContent = ""
-    })
-  }
-}
-
-//слушатель с закрытием поп-апа при нажатии
-popupButtonsClose.forEach(button => {
-  const popup = button.closest('.popup')
-  button.addEventListener('click', () => closeModal(popup))
-})
+// //слушатель с закрытием поп-апа при нажатии
+// popupsButtonsCloses.forEach(button => {
+//   const popup = button.closest('.popup')
+//   button.addEventListener('click', () => closeModal(popup))
+// })
 
 //добавлене текста при создании профиля и закрытие поп-апа
 popUpForm.addEventListener('submit', (evt) => {
@@ -108,8 +70,11 @@ popUpForm.addEventListener('submit', (evt) => {
 //слушать с открытием поп-апа для добавления фото
 popUpPhotoAddButton.addEventListener('click', function() {
   openModal(popUpCreate)
-  formAddPhotoBtn.setAttribute('disabled', true);
-  formAddPhotoBtn.classList.add('popup__button_inactive');
+  popUpTitle.value = ''
+  popUpLink.value = ''
+  const cardValid = new FormValidator(settings, formAddPhoto)
+  cardValid.enableValidation();
+  cardValid.resetValidation()
 });
 
 //массив из 6 карточек
@@ -166,17 +131,6 @@ function openPhoto(evt) {
   openModal(popUpImage);
 }
 
-//закрытие попапа вне области
-window.onclick = function(event) {
-  popupContainers.forEach((Container) => {
-    popUps.forEach((popup) => {
-      if (event.target !== Container && event.target === popup) {
-        closeModal(popup)
-      }
-    })
-  })
-}
-
 // закрытие попапа по клавише Escape
 function closeByEscape(evt) {
   if (evt.key === 'Escape') {
@@ -185,7 +139,13 @@ function closeByEscape(evt) {
   }
 }
 
-formSelectors.forEach(formSelector => {
-  const editPopValid = new FormValidator(settings, formSelector)
-  editPopValid.enableValidation()
+popUps.forEach((popup) => {
+    popup.addEventListener('mousedown', (evt) => {
+        if (evt.target.classList.contains('popup_open')) {
+            closeModal(popup)
+        }
+        if (evt.target.classList.contains('popup__button-close')) {
+          closeModal(popup)
+        }
+    })
 })
