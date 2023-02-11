@@ -30,6 +30,11 @@ const settings = {
   buttonInactive: 'popup__button_inactive',
 }
 
+const profileValid = new FormValidator(settings, formAddProfile)
+profileValid.enableValidation();
+
+const cardValid = new FormValidator(settings, formAddPhoto)
+cardValid.enableValidation();
 
 //открытие поп-апа
 function openModal(popUp) {
@@ -48,16 +53,8 @@ profileButtonCreate.addEventListener('click', function() {
   openModal(popUpProfile)
   popUpName.value = profileName.textContent
   popUpSubName.value = profileSubName.textContent
-  const profileValid = new FormValidator(settings, formAddProfile)
-  profileValid.enableValidation();
   profileValid.resetValidation()
 });
-
-// //слушатель с закрытием поп-апа при нажатии
-// popupsButtonsCloses.forEach(button => {
-//   const popup = button.closest('.popup')
-//   button.addEventListener('click', () => closeModal(popup))
-// })
 
 //добавлене текста при создании профиля и закрытие поп-апа
 popUpForm.addEventListener('submit', (evt) => {
@@ -72,8 +69,6 @@ popUpPhotoAddButton.addEventListener('click', function() {
   openModal(popUpCreate)
   popUpTitle.value = ''
   popUpLink.value = ''
-  const cardValid = new FormValidator(settings, formAddPhoto)
-  cardValid.enableValidation();
   cardValid.resetValidation()
 });
 
@@ -109,9 +104,14 @@ initialCards.forEach(item => {
   addPhoto(item.name, item.link, '#photo-card-tepmlate')
 })
 
-function addPhoto(item, link, templateSelector){
+function createCard(item, link, templateSelector) {
   const card = new Card(item, link, templateSelector, openPhoto)
-  photoCards.prepend(card.generateCard())
+  return card.generateCard()
+}
+
+function addPhoto(item, link, templateSelector){
+  const card = createCard(item, link, templateSelector)
+  photoCards.prepend(card)
 }
 
 //создаие нового места, добавление ссылки на картинку, добавление подписи для картинки
