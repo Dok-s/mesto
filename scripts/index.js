@@ -10,7 +10,7 @@ const profileName = document.querySelector('.profile__name')
 const profileSubName = document.querySelector('.profile__subname')
 const profileButtonCreate = document.querySelector('.profile__button-create')
 const popupsButtonsCloses = document.querySelectorAll('.popup__button-close')
-const popUpForm = document.querySelector('.popup_profile .popup__form')
+const popUpFormProfile = document.querySelector('.popup_profile .popup__form')
 const popUpPhotoAddButton = document.querySelector('.profile__button')
 const popUpCreate = document.querySelector('.popup_create')
 const photoCards = document.querySelector('.photo-cards')
@@ -57,7 +57,7 @@ profileButtonCreate.addEventListener('click', function() {
 });
 
 //добавлене текста при создании профиля и закрытие поп-апа
-popUpForm.addEventListener('submit', (evt) => {
+popUpFormProfile.addEventListener('submit', (evt) => {
   evt.preventDefault();
   profileName.textContent = popUpName.value
   profileSubName.textContent = popUpSubName.value
@@ -118,7 +118,7 @@ function addPhoto(item, link, templateSelector){
 formAddPhoto.addEventListener('submit', function(evt) {
   evt.preventDefault()
 
-  addPhoto(title.value, link.value, '#photo-card-tepmlate', openPhoto);
+  addPhoto(title.value, link.value, '#photo-card-tepmlate');
   closeModal(popUpCreate)
 
   evt.target.reset();
