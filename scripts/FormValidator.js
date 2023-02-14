@@ -17,7 +17,7 @@ class FormValidator {
     };
 
   _setEventListeners() {
-    this._inputList = Array.from(this._formElement);
+    this._inputList = Array.from(this._formElement).filter(i => i.tagName !== "BUTTON")
     this._inputBtn = this._formElement.querySelector(this._submitButtonSelector);
     this._inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
@@ -60,11 +60,14 @@ class FormValidator {
   _hideInputError = (inputElement) => {
     const errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.remove(this._inputErrorClass);
-    try {
-      errorElement.classList.remove(this._errorClass);
-      errorElement.textContent = '';
-    } catch (error) {
-    }
+    console.log(inputElement)
+    // try {
+    //   errorElement.classList.remove(this._errorClass);
+    //   errorElement.textContent = '';
+    // } catch (error) {
+    // }
+    errorElement.classList.remove(this._errorClass);
+    errorElement.textContent = '';
   };
 
   resetValidation() {
