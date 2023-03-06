@@ -1,9 +1,9 @@
-class Card {
-  constructor(titleValue, linkValue, templateSelector, openPhoto) {
+export default class Card {
+  constructor(titleValue, linkValue, templateSelector, handleCardClick) {
     this._titleValue = titleValue;
     this._linkValue = linkValue;
     this._templateSelector = templateSelector;
-    this._openPhoto = openPhoto;
+    this._handleCardClick = handleCardClick;
   }
 
   _getTemplate() {
@@ -36,9 +36,9 @@ class Card {
       evt.target.classList.toggle('photo-card__like_type_on')
     });
 
-    this._element.querySelector('.photo-card__image').addEventListener('click', this._openPhoto);
+    this._element.querySelector('.photo-card__image').addEventListener('click', () => {
+      this._handleCardClick(this._titleValue, this._linkValue)
+    });
   }
 
 }
-
-export { Card }
