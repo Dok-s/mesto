@@ -1,3 +1,5 @@
+import './index.css';
+
 import {
   popUpName,
   popUpSubName,
@@ -79,8 +81,8 @@ function formCard() {
   addPhoto(cardElement);
 }
 
-function formProfile(formData) {
-  userProfile.setUserInfo(formData);
+function formProfile(data) {
+  userProfile.setUserInfo(data);
 }
 
 function handleCardClick(name, link) {
