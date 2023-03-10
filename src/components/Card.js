@@ -9,8 +9,7 @@ export default class Card {
   _getTemplate() {
     const cardElement = document
       .querySelector(this._templateSelector)
-      .content
-      .querySelector('.photo-card')
+      .content.querySelector(".photo-card")
       .cloneNode(true);
 
     return cardElement;
@@ -18,9 +17,10 @@ export default class Card {
 
   generateCard() {
     this._element = this._getTemplate();
-    this._cardImage = this._element.querySelector('.photo-card__image');
+    this._cardImage = this._element.querySelector(".photo-card__image");
     this._cardImage.src = this._linkValue;
-    this._element.querySelector('.photo-card__title').textContent = this._titleValue;
+    this._element.querySelector(".photo-card__title").textContent =
+      this._titleValue;
     this._cardImage.alt = this._titleValue;
     this._setEventListeners();
 
@@ -28,17 +28,20 @@ export default class Card {
   }
 
   _setEventListeners() {
-    this._element.querySelector('.photo-card__bin').addEventListener('click', (evt) => {
-      evt.target.closest(".photo-card").remove()
-    });
+    this._element
+      .querySelector(".photo-card__bin")
+      .addEventListener("click", (evt) => {
+        evt.target.closest(".photo-card").remove();
+      });
 
-    this._element.querySelector('.photo-card__like').addEventListener('click', (evt) => {
-      evt.target.classList.toggle('photo-card__like_type_on')
-    });
+    this._element
+      .querySelector(".photo-card__like")
+      .addEventListener("click", (evt) => {
+        evt.target.classList.toggle("photo-card__like_type_on");
+      });
 
-    this._element.querySelector('.photo-card__image').addEventListener('click', () => {
-      this._handleCardClick(this._titleValue, this._linkValue)
+    this._cardImage.addEventListener("click", () => {
+      this._handleCardClick(this._titleValue, this._linkValue);
     });
   }
-
 }
