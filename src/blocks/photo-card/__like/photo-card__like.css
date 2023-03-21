@@ -5,8 +5,6 @@
   border: none;
   background-image: url("../../../images/like.svg");
   background-repeat: no-repeat;
-  margin-top: auto;
-  margin-bottom: auto;
   cursor: pointer;
 }
 

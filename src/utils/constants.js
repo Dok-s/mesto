@@ -2,6 +2,7 @@ const popUpName = document.querySelector(".popup__text_type_name");
 const popUpSubName = document.querySelector(".popup__text_type_subname");
 const profileButtonCreate = document.querySelector(".profile__button-create");
 const popUpPhotoAddButton = document.querySelector(".profile__button");
+const profileAvatar = document.querySelector(".profile__avatar");
 
 const settings = {
   inputSelectors: ".popup__text",
@@ -39,6 +40,14 @@ const initialCards = [
   },
 ];
 
+const param = {
+  url: "https://mesto.nomoreparties.co/v1/cohort-61",
+  headers: {
+    authorization: "50465666-9d1e-410e-8dca-ad2040da320a",
+    "Content-Type": "application/json",
+  },
+};
+
 export {
   popUpName,
   popUpSubName,
@@ -46,4 +55,6 @@ export {
   popUpPhotoAddButton,
   settings,
   initialCards,
+  param,
+  profileAvatar,
 };

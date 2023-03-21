@@ -1,8 +1,10 @@
 .profile__info {
   display: grid;
-  grid-template-areas: "title button"
-                       "subname subname";
+  grid-template-areas:
+    "title button"
+    "subname subname";
   margin-right: auto;
+  margin-left: 20px;
 }
 
 @media screen and (max-width: 700px) {
