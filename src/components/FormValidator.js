@@ -6,6 +6,12 @@ export default class FormValidator {
     this._errorClass = settings.errorClass;
     this._buttonInactive = settings.buttonInactive;
     this._formElement = formElement;
+    this._inputList = Array.from(this._formElement).filter(
+      (i) => i.tagName !== "BUTTON"
+    );
+    this._inputBtn = this._formElement.querySelector(
+      this._submitButtonSelector
+    );
   }
 
   enableValidation() {
@@ -16,12 +22,6 @@ export default class FormValidator {
   }
 
   _setEventListeners() {
-    this._inputList = Array.from(this._formElement).filter(
-      (i) => i.tagName !== "BUTTON"
-    );
-    this._inputBtn = this._formElement.querySelector(
-      this._submitButtonSelector
-    );
     this._inputList.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
         this._checkInputValidity(inputElement);
@@ -29,7 +29,7 @@ export default class FormValidator {
         this._inputList.forEach((item) => {
           arrBool.push(item.validity.valid);
         });
-        const isValid = arrBool.includes(false) ? false : true;
+        const isValid = !arrBool.includes(false);
         this._setSubmitButtonState(isValid, this._inputBtn);
       });
     });

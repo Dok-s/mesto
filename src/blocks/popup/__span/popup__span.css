@@ -1,4 +1,6 @@
 .popup__span {
+  font-size: 14px;
+  line-height: 16.94px;
   min-height: 40px;
   color: #ff0000;
 }

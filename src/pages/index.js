@@ -76,10 +76,13 @@ profileAvatar.addEventListener("click", () => {
 
 const api = new Api(param);
 
-api.getUserInfo().then((data) => {
-  userProfile.setUserInfo(data);
-  userProfile.setUserAvatar(data);
-});
+api
+  .getUserInfo()
+  .then((data) => {
+    userProfile.setUserInfo(data);
+    userProfile.setUserAvatar(data);
+  })
+  .catch((err) => console.log(err));
 
 const cards = new Section(
   {
@@ -90,13 +93,16 @@ const cards = new Section(
   ".photo-cards"
 );
 
-api.getInitialCards().then((items) => {
-  cards.renderItems(items);
-});
+api
+  .getInitialCards()
+  .then((items) => {
+    cards.renderItems(items);
+  })
+  .catch((err) => console.log(err));
 
-function createCard(res) {
-  res.user = userProfile.getUserInfo();
-  const card = new Card(res, "#photo-card-template", {
+function createCard(data) {
+  data.user = userProfile.getUserInfo();
+  const card = new Card(data, "#photo-card-template", {
     click: handleCardClick,
     like: (currentData, callback) => {
       if (card.isLike()) {
@@ -139,6 +145,7 @@ function handleCardFormSubmit(data) {
     .then((res) => {
       const cardElement = createCard(res);
       addPhoto(cardElement);
+      cardPopup.close();
     })
     .catch((err) => console.log(err));
 }
@@ -148,6 +155,7 @@ function handleProfileFormSubmit({ name, about }) {
     .setUserInfo({ name: name, about: about })
     .then((data) => {
       userProfile.setUserInfo(data);
+      profilePopup.close();
     })
     .catch((err) => console.log(err));
 }
@@ -157,6 +165,7 @@ function handleAvatarSubmit({ avatar }) {
     .setAvatar({ avatar: avatar })
     .then((data) => {
       userProfile.setUserAvatar(data);
+      avatarPopup.close();
     })
     .catch((err) => console.log(err));
 }

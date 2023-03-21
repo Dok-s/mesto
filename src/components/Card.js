@@ -1,9 +1,9 @@
 export default class Card {
-  constructor(res, templateSelector, handleCard) {
-    this._titleValue = res.name;
-    this._linkValue = res.link;
-    this._likes = res.likes;
-    this._res = res;
+  constructor(data, templateSelector, handleCard) {
+    this._titleValue = data.name;
+    this._linkValue = data.link;
+    this._likes = data.likes;
+    this._data = data;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCard.click;
     this._handleCardLike = handleCard.like;
@@ -45,38 +45,40 @@ export default class Card {
   }
 
   _isOwner() {
-    return this._res.user._id === this._res.owner._id;
+    return this._data.user._id === this._data.owner._id;
   }
 
   isLike() {
-    return this._res.likes.some((item) => {
-      return item._id === this._res.user._id;
+    return this._data.likes.some((item) => {
+      return item._id === this._data.user._id;
     });
   }
 
   toogleLike() {
     if (this.isLike()) {
       this._like.classList.add("photo-card__like_type_on");
+      this._likeCounter.textContent = this._data.likes.length;
     } else {
       this._like.classList.remove("photo-card__like_type_on");
+      this._likeCounter.textContent = this._data.likes.length;
     }
   }
 
   _handleLike() {
-    this._handleCardLike(this._res, (updatedLike) => {
-      this._res.likes = updatedLike;
+    this._handleCardLike(this._data, (updatedLike) => {
+      this._data.likes = updatedLike; // НЕ ПОЛУЧАЕТСЯ эту строчку перенести в toggleLike (выдает ошибку)
       this.toogleLike();
-      this._likeCounter.textContent = this._res.likes.length;
     });
   }
 
   _deleteCard() {
-    this._element.closest(".photo-card").remove();
+    this._element.remove();
+    this._element = null;
   }
 
   _setEventListeners() {
     this._bin.addEventListener("click", () => {
-      this._handleCardDelete(this._res, (evt) => {
+      this._handleCardDelete(this._data, () => {
         this._deleteCard();
       });
     });
